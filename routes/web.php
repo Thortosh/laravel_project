@@ -17,4 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::name('home')->get('/home', 'HomeController@index');
+
+Route::get('/todo', function () {
+    return view('todo');
+})->name('todo');
+
+Route::resource('list', 'TodoListController');
+// Создаем вложенный роут
+Route::resource('list.item','TodoItemController')->except(['index']);
