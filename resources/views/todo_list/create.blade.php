@@ -9,7 +9,10 @@
     <div>
         Описание <input name="description" maxlength="256" minlength="0">
     </div>
- {{--   <div>
+    <div>
+        Доступно только мне <input type="checkbox" name="is_public" value="1">
+    </div>
+        {{--   <div>
         <input id="input" placeholder="What needs to be done?">
     </div>--}}
     <input type="submit" value="отправить">

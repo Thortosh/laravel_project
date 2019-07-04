@@ -70,6 +70,7 @@
                     @auth
                         <a href="{{ route('home') }}">Home</a>
                         <a href="{{ route('list.index') }}">ToDo</a>
+                        <a href="{{ route('public.index') }}">Public</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
 

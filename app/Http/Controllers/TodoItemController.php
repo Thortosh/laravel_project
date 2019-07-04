@@ -38,7 +38,7 @@ class TodoItemController extends Controller
 
         TodoItem::query()->create([
             'text' => $request->get('text'),
-            'is_done' => (bool) $request->get('is_done'),
+            'is_done' => (bool)$request->get('is_done'),
             'todo_list_id' => $request->get('todo_list_id')
         ]);
 
@@ -49,7 +49,7 @@ class TodoItemController extends Controller
      * Display the specified resource.
      *
      * @param TodoList $list
-     * @param \App\TodoItem $item
+     * @param TodoItem $item
      * @return \Illuminate\Http\Response
      */
     public function show(TodoList $list, TodoItem $item)
@@ -60,7 +60,8 @@ class TodoItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\TodoItem $item
+     * @param TodoList $list
+     * @param TodoItem $item
      * @return \Illuminate\Http\Response
      */
     public function edit(TodoList $list, TodoItem $item)
@@ -73,7 +74,7 @@ class TodoItemController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param TodoList $list
-     * @param \App\TodoItem $item
+     * @param TodoItem $item
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, TodoList $list, TodoItem $item)
@@ -85,24 +86,23 @@ class TodoItemController extends Controller
 
         $item->update([
             'text' => $request->get('text'),
-            'is_done' => (bool) $request->get('is_done'),
+            'is_done' => (bool)$request->get('is_done'),
         ]);
 
-        return redirect()->route('list.show', ['list' => $list]);
+        return redirect()->route('list.show', ['list' => $list->id]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\TodoItem $item
+     * @param TodoList $list
+     * @param TodoItem $item
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public
-    function destroy(
-        TodoItem $item
-    ) {
+    public function destroy(TodoList $list, TodoItem $item)
+    {
         $item->delete();
-        return redirect()->route('item.index');
+        return redirect()->route('list.show', ['list' => $list->id]);
     }
 }

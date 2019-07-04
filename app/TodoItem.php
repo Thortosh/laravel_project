@@ -19,4 +19,12 @@ class TodoItem extends Model
 {
     protected $table = 'todo_items';                                // имя таблицы
     protected $fillable = ['text', 'todo_list_id', 'is_done'];      // Список полей которые мы можем заполнять сами
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function list()
+    {
+        return $this->belongsTo('App\TodoList','todo_list_id', 'id');
+    }
 }
