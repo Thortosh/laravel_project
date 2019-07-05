@@ -42,8 +42,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('list', 'TodoListController');
 // Создаем вложенный роут
     Route::resource('list.item', 'TodoItemController')->except(['index']);
-//    Route::resource('public', 'TodopublicController');
+// группа для паблик страниц, которые будут начинаться с /public и иметь имена нач. с public.
+    Route::prefix('public')->name('public.')->group(function (){
+        Route::get('/', 'TodopublicController@index')->name('index');
+        Route::get('/copy/{list}', 'TodopublicController@copy')->name('copy');
+    });
 });
-Route::get('public', 'TodopublicController@index')->name('public.index');
-Route::get('public/copy/{list}', 'TodopublicController@copy')->name('public.copy');
 
+Route::get('user/me', 'UserProfileController@me')->name('user.me');
+Route::resource('user', 'UserProfileController');

@@ -62,6 +62,11 @@ class TodoList extends Model
         return $this->items()->where('is_done', true);
     }
 
+    public function getIsDoneAttribute() // camelCase snake_case UpCamelCase
+    {
+        return $this->items->count() && $this->items->count() == $this->items_done->count();
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Builder
      * Возвращаем результат запроса 'SELECT * FROM todo_lists WHERE is_public = true

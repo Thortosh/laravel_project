@@ -17,10 +17,12 @@
                             <a href="{{ route('list.index') }}">My todos</a>
                         </li>
                         <li>
-{{--                            @dd(\App\TodoList::is_public())--}}
-{{--                            @dd(route('list.public'))--}}
                             <a href="{{ route('public.index')  }}">Public todos</a>
                         </li>
+                        <li>
+                            <a href="{{ route('user.me')  }}">My profile</a>
+                        </li>
+
                     </div>
                 </div>
             </div>

@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 class TodoListController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->authorizeResource(TodoList::class, 'list');
+    }
+
     /**
      * Store a newly created resource in storage.
      * METHOD POST
@@ -49,7 +54,6 @@ class TodoListController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewany', TodoList::class);
 //        dd(\request());
 //        if (!\Auth::user())
         $todolists = TodoList::my()->withCount(['items', 'items_done'])->get();
@@ -83,7 +87,6 @@ class TodoListController extends Controller
      */
     public function show(TodoList $list)
     {
-        $this->authorize('view', $list);
         $list->load(['items']);
 //        $list->items = TodoItem::query()->where('todo_list_id', '=', $list->id)->get();
         return view('todo_list.show', ['list' => $list]);
@@ -98,7 +101,6 @@ class TodoListController extends Controller
      */
     public function edit(TodoList $list)
     {
-        $this->authorize('edit', $list);
         return view('todo_list.edit', ['list' => $list]);
     }
 

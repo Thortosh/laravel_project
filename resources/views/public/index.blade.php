@@ -6,46 +6,61 @@
             {{ \Session::get('message') }}
         </div>
     @endif
-    <a id="btn-remove-all" class="btn-common" href="{{ route('list.create') }}">Начать новый список</a>
-
+    {{--    <a id="btn-remove-all" class="btn-common" href="{{ route('list.create') }}">Начать новый список</a>--}}
     @if (count($todolists))
         <ul>
             @foreach($todolists as $list)
-                {{--                @if($list->is_public)--}}
+                <div class="card" style="width: 350px">
+                    <div class="card-body">
+                        <span class="card-title">
+                            <span class="badge
+                                @if ($list->items_done_count < $list->items_count)
+                                badge-primary
+                                @elseif ($list->items_count == 0)
+                                badge-secondary
+                                @elseif ($list->items_done_count == $list->items_count)
+                                badge-success
+                                @endif
+                                ">
+                                ({{ $list->items_done_count }} / {{ $list->items_count }})
+                            </span>
+                            <a href="{{ route('list.show', ['list'=>$list->id]) }}">{{$list->name}}</a>
+                            <span class="d-inline float-right">
+                                @if(Request::user()->id == $list->user_id)
+                                    @can('update', $list)
+                                        <a class="fas fa-edit btn btn-primary" size="5"
+                                           href="{{route('list.edit', ['list'=>$list->id])}}"> </a>
+                                    @endcan
+                                @else()
+                                    <a class="btn btn-success far fa-copy"
+                                       href="{{route('public.copy', ['list'=>$list->id])}}"></a>
+                                @endif
 
-                {{--                @dd($list)--}}
-                {{--                @dd($list->is_public)--}}
-                {{--                @if($list->is_public = 'Yes')--}}
-                <li> ({{ $list->items_done_count }} / {{ $list->items_count }})
-                    @can('view', $list)
-                        <a id="btn-remove-all" class="btn-common"
-                           href="{{ route('list.show', ['list'=>$list->id]) }}">{{$list->name}}</a>
-                    @endcan
+                                @can('delete', $list)
+                                    <form class="form-inline p0 float-right"
+                                          action="{{route('list.destroy', ['list'=>$list->id])}}"
+                                          method="post">
+                                        @method('delete')
+                                        @csrf               {{-- csrf токен авторизации--}}
+                                        <button class="btn btn-danger" type="submit">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                @endcan
 
-                    {{--                    @dd(Request::user())  текущий юзер  --}}
-                    {{--                    @dd({{$list->user_id}}) id создателя туду--}}
-                    @if(Request::user()->id == $list->user_id)
-                        @can('update', $list)
-                            (<a href="{{route('list.edit', ['list'=>$list->id])}}"> Редактировать </a> )
-                        @endcan
-                    @else()
-                        ( <a href="{{route('public.copy', ['list'=>$list->id])}}"> Копировать задчи к себе </a> )
-                    @endif
-                    {{($list->user->name)}}
-                    @can('delete', $list)
-                        <form action="{{route('list.destroy', ['list'=>$list->id])}}" method="post">
-                            @method('delete')
-                            @csrf               {{-- csrf токен авторизации--}}
-                            <input type="submit" value="Удалить">
-                        </form>
-                    @endcan
-                    <ul>
-                        @foreach($list->items as $item)
-                            <li>{{ $item->text }}</li>
-                        @endforeach
-                    </ul>
-                </li>
-                {{--                @endif--}}
+                            </span>
+                        </span>
+                        <div class="card-text">
+                            автор: {{($list->user->name)}}
+                        </div>
+
+                        <ul class="list-group">
+                            @foreach($list->items as $item)
+                                <li class="list-group-item">{{ $item->text }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             @endforeach
         </ul>
     @endif

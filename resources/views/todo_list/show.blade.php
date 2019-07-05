@@ -7,6 +7,7 @@
         </li>
         <li>
             Описание: {{$list->description}}
+            <span class="badge {{ $list->is_done ? 'badge-secondary' : 'badge-success' }}">status</span>
         </li>
     </ul>
     <a href="{{ route('list.item.create', ['list' => $list->id]) }}">Добавить задачу</a>

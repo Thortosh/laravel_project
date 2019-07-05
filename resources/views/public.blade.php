@@ -7,15 +7,10 @@
         </div>
     @endif
     <a id="btn-remove-all" class="btn-common" href="{{ route('list.create') }}">Начать новый список</a>
-
     @if (count($todolists))
         <ul>
             @foreach($todolists as $list)
                 @if(!$list->is_public)
-
-                    {{--                @dd($list)--}}
-                    {{--                @dd($list->is_public)--}}
-                    {{--                @if($list->is_public = 'Yes')--}}
                     <li> ({{ $list->items_done_count }} / {{ $list->items_count }})
                         <a id="btn-remove-all" class="btn-common"
                            href="{{ route('list.show', ['list'=>$list->id]) }}">{{$list->name}}</a>
